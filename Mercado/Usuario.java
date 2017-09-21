@@ -1,11 +1,11 @@
 package br.com.fatec;
 
-public class Usuário {
+public abstract class Usuario {
 
     private String user;
     private String senha;
 
-    public Usuário(String user, String senha) {
+    public Usuario(String user, String senha) {
         this.user = user;
         this.senha = senha;
     }
@@ -21,5 +21,12 @@ public class Usuário {
     public String getSenha() {
         return senha;
     }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+
+}
 
  
