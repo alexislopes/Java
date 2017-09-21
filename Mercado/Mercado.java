@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Mercado {
+    Administrador adm = new Administrador("admin", "1234");
     Scanner lernum = new Scanner(System.in);
     Scanner lerstr = new Scanner(System.in);
 
@@ -39,7 +40,7 @@ public class Mercado {
         }
 
     }
-    
+
 
     public void cadUser() throws Exception {
         int option;
@@ -47,6 +48,17 @@ public class Mercado {
         System.out.println("   1 - ADM   2 - CLIENTE   ");
         System.out.println("********* ESCOLHA *********");
         option = lernum.nextInt();
+
+        if(option == 1){
+            int codigo;
+            do{
+                System.out.println("Digite o código de ADMs: ");
+                codigo = lernum.nextInt();
+                if (codigo!= adm.getCodigo()){
+                    System.out.println(vermelho + "Este não é o codigo de ADMs!\n" + limpo);
+                }
+            }while (codigo != adm.getCodigo());
+        }
 
 
         boolean valid = false;
