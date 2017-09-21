@@ -1,8 +1,15 @@
 package Trab;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Produto {
+	public Produto(String nome, List<String> teg, int quantidade, float preco){
+		this.nome=nome;
+		this.teg=teg;
+		this.quantidade=quantidade;
+		this.preco=preco;
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -36,6 +43,9 @@ public class Produto {
 	public void addComent(String coment) {
 		this.coment.add(coment);
 	}
+	public void removeComent(int posi) {
+		this.coment.remove(posi);
+	}
 	public void addTeg(String teg) {
 		this.teg.add(teg);
 	}
@@ -54,5 +64,6 @@ public class Produto {
 	private List<String> teg;
 	private int quantidade;
 	private float preco;
-	private List<String> coment;
+	private List<String> coment=new ArrayList<>();
+
 }
