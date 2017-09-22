@@ -2,6 +2,7 @@ package Trab;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Produto {
     Scanner lernum = new Scanner(System.in);
@@ -56,7 +57,7 @@ public class Produto {
 
             switch (option) {
                 case 1:
-                    //método de compra
+                    e.comprarProduto();
                     break;
 
                 case 2:
@@ -67,7 +68,7 @@ public class Produto {
                     break;
 
                 case 4:
-                    infoProd();
+                    e.informacaoProduto();
                     break;
             }
         } while (option != 3);
@@ -109,7 +110,6 @@ public class Produto {
 //////////////////////////////////////////// MÉTODO DE INFORMAÇÕES DO PRODUTO \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public void infoProd() {
-
         System.out.print("Digite o ID do produto: ");
         String id = lerstr.nextLine();
         for (int i = 0; i < e.getProdutos().size(); i++) {
@@ -118,7 +118,6 @@ public class Produto {
                 e.getProdutos().get(i).listarCommment();
             }
         }
-
 
     }
 
