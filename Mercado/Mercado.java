@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Mercado {
+    Estoque e = new Estoque();
     Administrador adm = new Administrador();
     Scanner lernum = new Scanner(System.in);
     Scanner lerstr = new Scanner(System.in);
 
-    private List<Produto> produtos = new ArrayList<>();
     private List<Usuario> admins = new ArrayList<>();
     private List<Usuario> clientes = new ArrayList<>();
 
@@ -223,10 +223,10 @@ public class Mercado {
 
                 switch (option) {
                     case 1:
-                        addProduto();
+                        e.addProduto();
                         break;
                     case 2:
-                        listarProdutos();
+                        e.listarProdutos();
                         break;
 
                     case 3:
@@ -241,7 +241,7 @@ public class Mercado {
 
 /////////////////////////////////////////// MÉTODO PARA ADD PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-    public void addProduto() {
+   /* public void addProduto() {
         ArrayList<String> tags = new ArrayList<>();
 
         System.out.print("Digite um nome para o produto: ");
@@ -274,11 +274,11 @@ public class Mercado {
         Produto novo = new Produto(nome, tags, quantidade, preco);
         produtos.add(novo);
         System.out.println(verdim + "\nProduto cadastrado com sucesso!" + limpo);
-    }
+    }*/
 
 ////////////////////////////////////////// MÉTODO PARA LISTAR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-    public void listarProdutos() {
+   /* public void listarProdutos() {
         if (produtos.isEmpty()) {
             System.out.println(verde + "Ainda não há nenhum produto\n" + limpo);
         } else {
@@ -286,9 +286,7 @@ public class Mercado {
                 System.out.println(produto.dadosFormatados());
             }
         }
-    }
+    }*/
 
 
 }
-
-
