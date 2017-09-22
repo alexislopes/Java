@@ -3,7 +3,7 @@ package Trab;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Produto {
+public class Produto{
 
     private String nome;
     private List<String> teg;
@@ -11,7 +11,7 @@ public class Produto {
     private double preco;
     private List<String> coment = new ArrayList<>();
 
-    public Produto(String nome, List<String> teg, int quantidade, float preco){
+    public Produto(String nome, List<String> teg, int quantidade, double preco){
         this.nome=nome;
         this.teg=teg;
         this.quantidade=quantidade;
@@ -69,4 +69,14 @@ public class Produto {
     }
 
 
+
+    public String dadosFormatados() {
+
+        String dadosFormatados;
+        dadosFormatados = "Nome: " + getNome();
+        dadosFormatados = dadosFormatados + "\nQuantidade: " + getQuantidade();
+        dadosFormatados = dadosFormatados + "\nPreço: " + getPreco() + "\n";
+
+        return dadosFormatados;
+    }
 }
