@@ -5,9 +5,8 @@ public abstract class Usuario {
     private String user;
     private String senha;
 
-    public Usuario(String user, String senha) {
-        this.user = user;
-        this.senha = senha;
+    public Usuario() {
+
     }
 
     public String getUser() {
@@ -28,5 +27,4 @@ public abstract class Usuario {
 
 
 }
-
  
