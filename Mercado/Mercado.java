@@ -1,4 +1,4 @@
-package br.com.fatec;
+package Trab;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -243,16 +243,12 @@ public class Mercado {
 
    /* public void addProduto() {
         ArrayList<String> tags = new ArrayList<>();
-
         System.out.print("Digite um nome para o produto: ");
         String nome = lerstr.nextLine();
-
         System.out.print("Digite a quantidade do produto: ");
         int quantidade = lernum.nextInt();
-
         System.out.print("Digite  o preço do produto: ");
         double preco = lernum.nextDouble();
-
         int option;
         System.out.println("Deseja adidcionar algumas tags? ");
         System.out.print("\t1 - SIM    2 - NÃO");
@@ -270,7 +266,6 @@ public class Mercado {
         } else {
             System.out.println(verde + "Tudo bem, você pode adicionar mais tarde!" + limpo);
         }
-
         Produto novo = new Produto(nome, tags, quantidade, preco);
         produtos.add(novo);
         System.out.println(verdim + "\nProduto cadastrado com sucesso!" + limpo);
