@@ -99,8 +99,56 @@ public class Estoque {
 
 
     }
-
-
+///////////////////////////////////////////// COMPRAR PRODUTO \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    
+    public List<Double> comprarProduto() {
+    	List<Double> preco=new ArrayList<>();
+    	System.out.println("Digite o ID do produto:");
+    	int ID=innum.nextInt();
+    	System.out.println("Digite a quantidade:");
+    	int qtd=innum.nextInt();
+    	boolean resp=verificarQuantidade(ID,qtd);
+    	if(resp) {
+    		produtos.get(ID).setQuantidade(produtos.get(ID).getQuantidade()-qtd);
+    		preco.add(gerarPreco(ID,qtd));
+    		double aux=(double) ID;
+    		preco.add(aux);
+    		return preco;
+    	}
+    	else {
+    		System.out.println("Quantidade de estoque insuficiente!");	
+    		return preco;
+    	}
+    }
+    
+///////////////////////////////////////////// INFORMACAO DO PRODUTO \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    
+    public void informacaoProduto() {
+    	 System.out.print("Digite o ID do produto: ");
+         int id = innum.nextInt();
+         System.out.println(produtos.get(id).getPreco());
+         System.out.println(produtos.get(id).getNome());
+         System.out.println(produtos.get(id).getTeg());
+         System.out.println(produtos.get(id).getQuantidade());
+    }
+    
+///////////////////////////////////////////// VERIFIVAR QUANTIDADE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    
+    public boolean verificarQuantidade(int id,int qtd) {
+    	int qtdn=produtos.get(id).getQuantidade();
+    	if(qtd>qtdn)
+    		return true;
+    	return false;
+    }
+   
+///////////////////////////////////////////// GERAR PRECO \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    
+    public double gerarPreco(int id, int qtd) {
+    	double result=0;
+    	result= (produtos.get(id).getPreco())*qtd;
+    	return result;
+    }
+    
 ///////////////////////////////////////////// MÉTODOS PARA EXCLUIR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public void excluirProduto(String nome) {
