@@ -14,8 +14,9 @@ public class Estoque {
     Scanner in = new Scanner(System.in);
     Scanner innum = new Scanner(System.in);
     private List<Produto> produtos = new ArrayList<>();
+    Produto novo;
 
-
+//////////////////////////////////// MÉTODOS PARA VERIFICAR EXISTENCIA DE UM PRODUTO \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public boolean verifNome(String nome) {
         for (int c = 0; c < produtos.size(); c++) {
@@ -47,15 +48,21 @@ public class Estoque {
         System.out.println(verdim + "\nProduto cadastrado com sucesso!" + limpo);
     }*/
 
-// MÉTODO ATUALIZADO PARA ADD PRODUTO
+//////////////////////////////////////////// MÉTODOS PARA ADICIONAR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+// Método atualizado para add produtos.
+
+
+    int intid = 0;
 
     public void addProduto() {
         String nome;
         boolean valid = false;
         ArrayList<String> tags = new ArrayList<>();
 
+        intid = intid + 1;
+
         do {
-            if (valid){
+            if (valid) {
                 System.out.println(vermelho + "Esse produtp já existe!\n" + limpo);
             }
             System.out.print("Digite um nome para o produto: ");
@@ -86,28 +93,24 @@ public class Estoque {
             System.out.println(verde + "Tudo bem, você pode adicionar mais tarde!" + limpo);
         }
 
-        Produto novo = new Produto(nome, tags, quantidade, preco);
+        novo = new Produto(nome, tags, quantidade, preco, intid);
         produtos.add(novo);
         System.out.println(verdim + "\nProduto cadastrado com sucesso!\n" + limpo);
+
+
     }
 
-// MÉTODOS PARA LISTAR PRODUTOS
 
-    public void listarProdutos() {
-        if (produtos.isEmpty()) {
-            System.out.println(verde + "Ainda não há nenhum produto\n" + limpo);
-        } else {
-            for (Produto produto : produtos) {
-                System.out.println(produto.dadosFormatados());
-            }
-        }
-    }
+///////////////////////////////////////////// MÉTODOS PARA EXCLUIR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public void excluirProduto(String nome) {
         for (int c = 0; c < produtos.size(); c++)
-            if (produtos.get(c).equals(nome))
+            if (produtos.get(c).getNome().equals(nome))
                 produtos.remove(c);
     }
+
+//////////////////////////////////////////////// MÉTODOS PARA CRIAR TAG \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+// no método addProduto(), há uma seção para adição de tags.
 
     public List<String> criarTeg() {
         boolean c = true;
@@ -123,11 +126,26 @@ public class Estoque {
         return teg;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
+///////////////////////////////////////////// MÉTODOS PARA LISTAR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void listarProdutos() {
+        if (produtos.isEmpty()) {
+            System.out.println(verde + "Ainda não há nenhum produto\n" + limpo);
+        } else {
+            for (Produto produto : produtos) {
+                System.out.println(produto.getId() + " - " + produto.getNome());
+            }
+            novo.opcoesDeProd();
+        }
     }
+
+
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
     }
 }
