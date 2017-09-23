@@ -36,7 +36,6 @@ public class Mercado {
         System.out.println("******************************************************");
         option = lernum.nextInt();
 
-
         switch (option) {
             case 1:
                 login();
@@ -48,9 +47,7 @@ public class Mercado {
             case 3:
                 System.out.println("Volte sempre!");
                 break;
-
         }
-
     }
 
 ////////////////////////////////////////// MÉTODO DE CADASTRO DE USUARIO \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -118,6 +115,8 @@ public class Mercado {
 
 /////////////////////////////////////////////// MÉTODO DE LOGIN \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+    String nome;
+
     public void login() throws Exception {
         Usuario o;
         int option;
@@ -128,7 +127,7 @@ public class Mercado {
         option = lernum.nextInt();
 
         System.out.print("Digite o nome de usuário: ");
-        String nome = lerstr.nextLine().toLowerCase();
+        nome = lerstr.nextLine().toLowerCase();
 
         System.out.print("Digite sua senha: ");
         String senha = lerstr.nextLine();
@@ -180,7 +179,7 @@ public class Mercado {
         }
         arquivo.close();
         if (linha.contains(user1) && linha.contains(senha1)) {
-            System.out.println(verdim + "Validado!" + limpo + "\n");
+            System.out.println(verdim + "Conectado como: " + nome + "." + limpo + "\n");
             return true;
         } else {
             return false;
@@ -220,9 +219,9 @@ public class Mercado {
         if (o instanceof Administrador) {
             int option;
             do {
-                System.out.println("********************** OPÇÕES DE ADM *********************");
-                System.out.println("**   1 - ADD PRODUTO   2 - LISTAR PRODUTOS   3 - SAIR   **");
-                System.out.println("**********************************************************");
+                System.out.println("******************************* OPÇÕES DE ADM ********************************");
+                System.out.println("**   1 - ADD PRODUTO   2 - LISTAR PRODUTOS   3 - VER HISTÓRICO   4 - SAIR   **");
+                System.out.println("******************************************************************************");
                 option = lernum.nextInt();
 
                 switch (option) {
@@ -234,23 +233,33 @@ public class Mercado {
                         break;
 
                     case 3:
+                        historico();
+                        break;
+
+                    case 4:
                         intro();
                         break;
 
                 }
-            } while (option != 3);
+            } while (option != 4);
         } else {
-            listarProdutos(o);
+            if (estoque.getProdutos().isEmpty()) {
+                listarProdutos(o);
+                intro();
+            } else {
+                listarProdutos(o);
+            }
         }
     }
 ///////////////////////////////////////// MÉTODO PARA COMPRAR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    private int comprasFeitas = 0, comprasCanceladas = 0;
 
     public void comprarProduto() {
 
         boolean disp;
 
         System.out.print("Digite o ID do produto: ");
-        lernum.next();
         int idprod = lernum.nextInt();
 
         for (int i = 0; i < estoque.getProdutos().size(); i++) {
@@ -271,12 +280,12 @@ public class Mercado {
                         double tpreco = estoque.getProdutos().get(i).getPreco() * quant;
                         System.out.println(verdim + "Obrigado pela compra, você gastou: R$ " + tpreco + limpo + "\n");
                         estoque.getProdutos().get(i).setQuantidade(estoque.getProdutos().get(i).getQuantidade() - quant);
+                        comprasFeitas++;
                     } else {
                         System.out.println(verdim + "Tudo bem, você pode fazer isso depois!" + limpo);
+                        comprasCanceladas++;
                     }
                 }
-            } else {
-                System.out.println(vermelho + "Desculpa mas esse produto não existe!" + limpo);
             }
         }
     }
@@ -289,57 +298,59 @@ public class Mercado {
         if (o instanceof Cliente) {
             int option;
 
+            do {
+                System.out.println("******************* OPÇÕES DE PRODUTO PARA CLIENTE ******************");
+                System.out.println("**   1 - COMPRAR   2 - COMENTAR   3 - VER COMENTÁRIOS   4 - SAIR   **");
+                System.out.println("*********************************************************************");
+                option = lernum.nextInt();
 
-            System.out.println("******************** OPÇÕES DE PRODUTO PARA CLIENTE *******************");
-            System.out.println("**   1 - COMPRAR   2 - COMENTAR   3 - VER COMENTÁRIOS   4 - VOLTAR   **");
-            System.out.println("***********************************************************************");
-            option = lernum.nextInt();
+                switch (option) {
+                    case 1:
+                        comprarProduto();
+                        break;
 
-            switch (option) {
-                case 1:
-                    comprarProduto();
-                    break;
+                    case 2:
+                        commentProd(o);
+                        break;
 
-                case 2:
-                    commentProd(o);
-                    break;
+                    case 3:
+                        listarCommment();
+                        break;
 
-                case 3:
-                    listarCommment();
-                    break;
-
-                case 4:
-                    telaPrincipal(o);
-                    break;
-            }
+                    case 4:
+                        intro();
+                        break;
+                }
+            } while (option != 4);
 
         }
 
         if (o instanceof Administrador) {
             int option;
 
+            do {
+                System.out.println("********************* OPÇÕES DE PRODUTO PARA ADM *********************");
+                System.out.println("**   1 - EDITAR   2 - COMENTAR   3 - VER COMENTÁRIOS   4 - VOLTAR   **");
+                System.out.println("**********************************************************************");
+                option = lernum.nextInt();
 
-            System.out.println("********************* OPÇÕES DE PRODUTO PARA ADM *********************");
-            System.out.println("**   1 - EDITAR   2 - COMENTAR   3 - VER COMENTÁRIOS   4 - VOLTAR   **");
-            System.out.println("**********************************************************************");
-            option = lernum.nextInt();
+                switch (option) {
+                    case 1:
+                        estoque.editarProduto();
+                        break;
+                    case 2:
+                        commentProd(o);
+                        break;
+                    case 3:
+                        listarCommment();
+                        break;
 
-            switch (option) {
-                case 1:
-                    //METODO PARA EDITAR PRODUTO
-                    break;
-                case 2:
-                    commentProd(o);
-                    break;
-                case 3:
-                    listarCommment();
-                    break;
+                    case 4:
+                        telaPrincipal(o);
+                        break;
+                }
 
-                case 4:
-                    telaPrincipal(o);
-                    break;
-            }
-
+            } while (option != 4);
         }
     }
 
@@ -381,7 +392,7 @@ public class Mercado {
         }
     }
 
-    /////////////////////////////////////////// MÉTODOS PARA LISTAR COMENTÁRIOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////////// MÉTODOS PARA LISTAR COMENTÁRIOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public void listarCommment() {
         int idProd;
@@ -402,8 +413,18 @@ public class Mercado {
         }
 
     }
+
+///////////////////////////////////////////////// MÉTODO DE HISTÓRICO \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void historico() {
+        int qtadeDeProd = 0;
+        for (Produto produto : estoque.getProdutos()) {
+            qtadeDeProd = qtadeDeProd + produto.getQuantidade();
+        }
+        System.out.println(amarelo + "Estoque está com " + estoque.getProdutos().size() + " produtos no momento." + limpo);
+        System.out.println(amarelo + "Já foram efetuadas " + comprasFeitas + " compras." + limpo);
+        System.out.println(amarelo + comprasCanceladas + " compras foram canceladas.\n" + limpo);
+    }
+
+
 }
-
-
-
-
