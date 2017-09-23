@@ -15,5 +15,4 @@ public class Administrador extends Usuario {
         this.codigo = codigo;
     }
 
-
 }
