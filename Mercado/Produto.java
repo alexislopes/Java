@@ -2,13 +2,8 @@ package br.com.fatec;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Produto {
-    Scanner lernum = new Scanner(System.in);
-    Scanner lerstr = new Scanner(System.in);
-
-    //Mercado m = new Mercado();
 
     private int id = 0;
     private String nome;
@@ -16,12 +11,6 @@ public class Produto {
     private int quantidade;
     private double preco;
     private List<String> coments = new ArrayList<>();
-
-    String verdim = "\033[36m";
-    String amarelo = "\033[33m";
-    String limpo = "\033[m";
-    String verde = "\033[32m";
-    String vermelho = "\033[31m";
 
     public Produto(String nome, List<String> tegs, int quantidade, double preco, int intid) {
         this.id = id + intid;
@@ -40,13 +29,10 @@ public class Produto {
         dadosFormatados = "ID: " + getId();
         dadosFormatados = dadosFormatados + "\nNome: " + getNome();
         dadosFormatados = dadosFormatados + "\nQuantidade: " + getQuantidade();
-        dadosFormatados = dadosFormatados + "\nPreço: R$" + getPreco() + "\n";
+        dadosFormatados = dadosFormatados + "\nPreço: R$ " + getPreco() + "\n";
 
         return dadosFormatados;
     }
-
-
-
 
     public String getNome() {
         return nome;
@@ -121,8 +107,4 @@ public class Produto {
     public void setId(int id) {
         this.id = id;
     }
-
-
-
-
 }
