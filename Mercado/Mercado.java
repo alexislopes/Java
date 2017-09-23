@@ -1,4 +1,4 @@
-package Trab;
+package br.com.fatec;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Mercado {
-    Estoque e = new Estoque();
-    Administrador adm = new Administrador();
+    Estoque estoque = new Estoque();
+    Usuario novoUser;
+    Administrador administrador = new Administrador();
+
+
     Scanner lernum = new Scanner(System.in);
     Scanner lerstr = new Scanner(System.in);
 
@@ -54,9 +57,9 @@ public class Mercado {
 
     public void cadUser() throws Exception {
         int option;
-        System.out.println("********* VOCE É? *********");
-        System.out.println("   1 - ADM   2 - CLIENTE   ");
-        System.out.println("********* ESCOLHA *********");
+        System.out.println("*********** VOCE É? ***********");
+        System.out.println("**   1 - ADM   2 - CLIENTE   **");
+        System.out.println("*********** ESCOLHA ***********");
         option = lernum.nextInt();
 
         if (option == 1) {
@@ -64,10 +67,10 @@ public class Mercado {
             do {
                 System.out.print("Digite o código de ADMs: ");
                 codigo = lernum.nextInt();
-                if (codigo != adm.getCodigo()) {
+                if (codigo != administrador.getCodigo()) {
                     System.out.println(vermelho + "Este não é o codigo de ADMs!\n" + limpo);
                 }
-            } while (codigo != adm.getCodigo());
+            } while (codigo != administrador.getCodigo());
         }
 
 
@@ -91,7 +94,6 @@ public class Mercado {
             }
         } while (!senha.equals(senha2));
 
-        Usuario novoUser;
 
         switch (option) {
             case 1:
@@ -110,6 +112,7 @@ public class Mercado {
                 break;
         }
 
+        intro();
 
     }
 
@@ -119,13 +122,13 @@ public class Mercado {
         Usuario o;
         int option;
         boolean valid;
-        System.out.println("********* VOCE É? *********");
-        System.out.println("   1 - ADM   2 - CLIENTE   ");
-        System.out.println("********* ESCOLHA *********");
+        System.out.println("*********** VOCE É? ***********");
+        System.out.println("**   1 - ADM   2 - CLIENTE   **");
+        System.out.println("*********** ESCOLHA ***********");
         option = lernum.nextInt();
 
         System.out.print("Digite o nome de usuário: ");
-        String nome = lerstr.nextLine();
+        String nome = lerstr.nextLine().toLowerCase();
 
         System.out.print("Digite sua senha: ");
         String senha = lerstr.nextLine();
@@ -194,14 +197,14 @@ public class Mercado {
             FileWriter arq = new FileWriter("d:\\Administradores.txt");
             PrintWriter gravarArq = new PrintWriter(arq);
             for (Usuario administrador : admins) {
-                gravarArq.println(administrador.getUser() + " " + administrador.getSenha());
+                gravarArq.println(administrador.getUser().toLowerCase() + " " + administrador.getSenha());
             }
             gravarArq.close();
         } else if (o instanceof Cliente) {
-            FileWriter arq = new FileWriter("d:\\Cliente.txt");
+            FileWriter arq = new FileWriter("d:\\Clientes.txt");
             PrintWriter gravarArq = new PrintWriter(arq);
             for (Usuario cliente : clientes) {
-                gravarArq.println(cliente.getUser() + " " + cliente.getSenha());
+                gravarArq.println(cliente.getUser().toLowerCase() + " " + cliente.getSenha());
             }
             gravarArq.close();
         }
@@ -213,6 +216,7 @@ public class Mercado {
 /////////////////////////////////////////// MÉTODO DE TELA PRINCIPAL \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     public void telaPrincipal(Usuario o) throws Exception {
+
         if (o instanceof Administrador) {
             int option;
             do {
@@ -223,10 +227,10 @@ public class Mercado {
 
                 switch (option) {
                     case 1:
-                        e.addProduto();
+                        estoque.addProduto();
                         break;
                     case 2:
-                        e.listarProdutos();
+                        listarProdutos(o);
                         break;
 
                     case 3:
@@ -235,53 +239,171 @@ public class Mercado {
 
                 }
             } while (option != 3);
+        } else {
+            listarProdutos(o);
+        }
+    }
+///////////////////////////////////////// MÉTODO PARA COMPRAR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void comprarProduto() {
+
+        boolean disp;
+
+        System.out.print("Digite o ID do produto: ");
+        lernum.next();
+        int idprod = lernum.nextInt();
+
+        for (int i = 0; i < estoque.getProdutos().size(); i++) {
+
+            if (idprod == estoque.getProdutos().get(i).getId()) {
+                System.out.print("Quantidade de " + estoque.getProdutos().get(i).getNome() + ": ");
+                int quant = lernum.nextInt();
+                disp = estoque.verificarQuantidade(idprod, quant);
+                if (!disp) {
+                    System.out.println(vermelho + "Desculpe, não temos essa quantidade em estoque!" + limpo + "temos apenas: " + estoque.getProdutos().get(i).getQuantidade());
+                } else {
+                    System.out.println(verde + "Você realmente deseja comprar" + limpo + " " + quant + " " + estoque.getProdutos().get(i).getNome() + verde + "?" + limpo);
+                    System.out.println("\t1 - SIM   2 - NÃO");
+                    int option = lernum.nextInt();
+
+
+                    if (option == 1) {
+                        double tpreco = estoque.getProdutos().get(i).getPreco() * quant;
+                        System.out.println(verdim + "Obrigado pela compra, você gastou: R$ " + tpreco + limpo + "\n");
+                        estoque.getProdutos().get(i).setQuantidade(estoque.getProdutos().get(i).getQuantidade() - quant);
+                    } else {
+                        System.out.println(verdim + "Tudo bem, você pode fazer isso depois!" + limpo);
+                    }
+                }
+            } else {
+                System.out.println(vermelho + "Desculpa mas esse produto não existe!" + limpo);
+            }
+        }
+    }
+
+///////////////////////////////////////////// MÉTODOS DE OPÇÕES DE PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void opcoesDeProd(Usuario o) throws Exception {
+
+
+        if (o instanceof Cliente) {
+            int option;
+
+
+            System.out.println("******************** OPÇÕES DE PRODUTO PARA CLIENTE *******************");
+            System.out.println("**   1 - COMPRAR   2 - COMENTAR   3 - VER COMENTÁRIOS   4 - VOLTAR   **");
+            System.out.println("***********************************************************************");
+            option = lernum.nextInt();
+
+            switch (option) {
+                case 1:
+                    comprarProduto();
+                    break;
+
+                case 2:
+                    commentProd(o);
+                    break;
+
+                case 3:
+                    listarCommment();
+                    break;
+
+                case 4:
+                    telaPrincipal(o);
+                    break;
+            }
+
+        }
+
+        if (o instanceof Administrador) {
+            int option;
+
+
+            System.out.println("********************* OPÇÕES DE PRODUTO PARA ADM *********************");
+            System.out.println("**   1 - EDITAR   2 - COMENTAR   3 - VER COMENTÁRIOS   4 - VOLTAR   **");
+            System.out.println("**********************************************************************");
+            option = lernum.nextInt();
+
+            switch (option) {
+                case 1:
+                    //METODO PARA EDITAR PRODUTO
+                    break;
+                case 2:
+                    commentProd(o);
+                    break;
+                case 3:
+                    listarCommment();
+                    break;
+
+                case 4:
+                    telaPrincipal(o);
+                    break;
+            }
+
+        }
+    }
+
+///////////////////////////////////////////// MÉTODOS PARA LISTAR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void listarProdutos(Usuario o) throws Exception {
+        estoque.varrerProduto();
+
+        if (estoque.getProdutos().isEmpty()) {
+            System.out.println(verde + "Ainda não há nenhum produto\n" + limpo);
+        } else {
+            System.out.println(amarelo + "\t   PRODUTOS\n" + limpo);
+            for (Produto produto : estoque.getProdutos()) {
+                System.out.println(produto.dadosFormatados());
+            }
+            opcoesDeProd(o);
+        }
+    }
+
+///////////////////////////////////////////// MÉTODO PARA COMENTAR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void commentProd(Usuario o) {
+
+        int idProd;
+        String comment;
+
+        System.out.print("Digite o ID do produto: ");
+        idProd = lernum.nextInt();
+        for (Produto produto : estoque.getProdutos()) {
+            if (idProd == produto.getId()) {
+                System.out.print("Digite seu nome: ");
+                String nome = lerstr.nextLine();
+                System.out.print("Digite seu comentário sobre " + produto.getNome() + ": ");
+                comment = lerstr.nextLine();
+                comment = nome + ": " + comment;
+                produto.getComents().add(comment);
+                System.out.println(verdim + "Comentário adicionado!\n" + limpo);
+            }
+        }
+    }
+
+    /////////////////////////////////////////// MÉTODOS PARA LISTAR COMENTÁRIOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void listarCommment() {
+        int idProd;
+        System.out.println("Digite o ID do produto: ");
+        idProd = lernum.nextInt();
+
+        for (Produto produto : estoque.getProdutos()) {
+            if (idProd == produto.getId()) {
+                if (estoque.novo.getComents().isEmpty()) {
+                    System.out.println(vermelho + "Ainda não há nenhumm comentário!" + limpo);
+                } else {
+                    System.out.println(amarelo + "COMENTÁRIOS SOBRE " + limpo + estoque.novo.getNome().toUpperCase() + ":");
+                    for (String comment : estoque.novo.getComents()) {
+                        System.out.println(comment);
+                    }
+                }
+            }
         }
 
     }
-
-/////////////////////////////////////////// MÉTODO PARA ADD PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-   /* public void addProduto() {
-        ArrayList<String> tags = new ArrayList<>();
-        System.out.print("Digite um nome para o produto: ");
-        String nome = lerstr.nextLine();
-        System.out.print("Digite a quantidade do produto: ");
-        int quantidade = lernum.nextInt();
-        System.out.print("Digite  o preço do produto: ");
-        double preco = lernum.nextDouble();
-        int option;
-        System.out.println("Deseja adidcionar algumas tags? ");
-        System.out.print("\t1 - SIM    2 - NÃO");
-        option = lernum.nextInt();
-        if (option == 1) {
-            String tag;
-            int qtdade;
-            System.out.print("Quantas? ");
-            qtdade = lernum.nextInt();
-            for (int i = 0; i < qtdade; i++) {
-                System.out.print("Digite a tag: ");
-                tag = lerstr.nextLine();
-                tags.add(tag);
-            }
-        } else {
-            System.out.println(verde + "Tudo bem, você pode adicionar mais tarde!" + limpo);
-        }
-        Produto novo = new Produto(nome, tags, quantidade, preco);
-        produtos.add(novo);
-        System.out.println(verdim + "\nProduto cadastrado com sucesso!" + limpo);
-    }*/
-
-////////////////////////////////////////// MÉTODO PARA LISTAR PRODUTOS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-   /* public void listarProdutos() {
-        if (produtos.isEmpty()) {
-            System.out.println(verde + "Ainda não há nenhum produto\n" + limpo);
-        } else {
-            for (Produto produto : produtos) {
-                System.out.println(produto.dadosFormatados());
-            }
-        }
-    }*/
-
-
 }
+
+
+
+
