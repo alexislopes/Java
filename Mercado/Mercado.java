@@ -256,7 +256,7 @@ public class Mercado {
     private int comprasFeitas = 0, comprasCanceladas = 0;
 
     public void comprarProduto() {
-
+        int quant;
         boolean disp;
 
         System.out.print("Digite o ID do produto: ");
@@ -266,7 +266,8 @@ public class Mercado {
 
             if (idprod == estoque.getProdutos().get(i).getId()) {
                 System.out.print("Quantidade de " + estoque.getProdutos().get(i).getNome() + ": ");
-                int quant = lernum.nextInt();
+                quant = lernum.nextInt();
+
                 disp = estoque.verificarQuantidade(idprod, quant);
                 if (!disp) {
                     System.out.println(vermelho + "Desculpe, não temos essa quantidade em estoque!" + limpo + "temos apenas: " + estoque.getProdutos().get(i).getQuantidade());
@@ -281,6 +282,7 @@ public class Mercado {
                         System.out.println(verdim + "Obrigado pela compra, você gastou: R$ " + tpreco + limpo + "\n");
                         estoque.getProdutos().get(i).setQuantidade(estoque.getProdutos().get(i).getQuantidade() - quant);
                         comprasFeitas++;
+                        recomendacoes(idprod);
                     } else {
                         System.out.println(verdim + "Tudo bem, você pode fazer isso depois!" + limpo);
                         comprasCanceladas++;
@@ -299,7 +301,7 @@ public class Mercado {
             int option;
 
             do {
-                System.out.println("******************* OPÇÕES DE PRODUTO PARA CLIENTE ******************");
+                System.out.println("\n******************* OPÇÕES DE PRODUTO PARA CLIENTE ******************");
                 System.out.println("**   1 - COMPRAR   2 - COMENTAR   3 - VER COMENTÁRIOS   4 - SAIR   **");
                 System.out.println("*********************************************************************");
                 option = lernum.nextInt();
@@ -329,7 +331,7 @@ public class Mercado {
             int option;
 
             do {
-                System.out.println("********************* OPÇÕES DE PRODUTO PARA ADM *********************");
+                System.out.println("\n********************* OPÇÕES DE PRODUTO PARA ADM *********************");
                 System.out.println("**   1 - EDITAR   2 - COMENTAR   3 - VER COMENTÁRIOS   4 - VOLTAR   **");
                 System.out.println("**********************************************************************");
                 option = lernum.nextInt();
@@ -346,7 +348,6 @@ public class Mercado {
                         break;
 
                     case 4:
-                        telaPrincipal(o);
                         break;
                 }
 
@@ -426,5 +427,32 @@ public class Mercado {
         System.out.println(amarelo + comprasCanceladas + " compras foram canceladas.\n" + limpo);
     }
 
+//////////////////////////////////////////////// MÉTODO DE RECOMENDÇÕES \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+    public void recomendacoes(int id) {
+        System.out.println(verde + "Você também pode gostar: " + limpo);
+        for (Produto produto : estoque.getProdutos()) {
+            if (!produto.getTegs().isEmpty()) {
+                if (id == produto.getId()) {
+                    for (String tag : produto.getTegs()) {
+                        for (Produto produtoOutro : estoque.getProdutos()) {
+                            if (produtoOutro.getId() != id) {
+                                for (String tago : produtoOutro.getTegs()) {
+                                    if (tago.equals(tag)) {
+                                        System.out.println(produtoOutro.getId() + " - " + produtoOutro.getNome());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                System.out.println("\n" + amarelo + "Sem recomendações!" + limpo);
+            }
+        }
+    }
 }
+
+
+
+
