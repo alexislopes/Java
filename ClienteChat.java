@@ -1,4 +1,4 @@
-//code from https://www.devmedia.com.br/como-criar-um-chat-multithread-com-socket-em-java/33639
+package br.com.fatec;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ import java.io.Writer;
 import java.net.Socket;
 import javax.swing.*;
 
-public class Cliente extends JFrame implements ActionListener, KeyListener{
+public class Cliente2 extends JFrame implements ActionListener, KeyListener{
 
     private static final long serialVersionUID = 1L;
     private JTextArea texto;
@@ -34,7 +34,7 @@ public class Cliente extends JFrame implements ActionListener, KeyListener{
     private JTextField txtPorta;
     private JTextField txtNome;
 
-    public Cliente() throws IOException{
+    public Cliente2() throws IOException{
         JLabel lblMessage = new JLabel("Verificar!");
         txtIP = new JTextField("127.0.0.1");
         txtPorta = new JTextField("12345");
