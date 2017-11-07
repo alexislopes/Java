@@ -1,46 +1,55 @@
-package br.com.fatec;
+//code from: https://www.devmedia.com.br/como-criar-um-chat-multithread-com-socket-em-java/33639
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.Socket;
+import javax.swing.*;
 
 public class Cliente extends JFrame implements ActionListener, KeyListener{
 
     private static final long serialVersionUID = 1L;
     private JTextArea texto;
-    private  JTextField txtMsg;
+    private JTextField txtMsg;
     private JButton btnSend;
     private JButton btnSair;
     private JLabel lblHistorico;
     private JLabel lblMsg;
     private JPanel pnlContent;
     private Socket socket;
-    private OutputStream ou;
+    private OutputStream ou ;
     private Writer ouw;
     private BufferedWriter bfw;
     private JTextField txtIP;
     private JTextField txtPorta;
     private JTextField txtNome;
 
-    public Cliente(){
+    public Cliente() throws IOException{
         JLabel lblMessage = new JLabel("Verificar!");
         txtIP = new JTextField("127.0.0.1");
         txtPorta = new JTextField("12345");
         txtNome = new JTextField("Cliente");
-        Object[] texts = {lblMessage, txtIP, txtPorta, txtNome};
+        Object[] texts = {lblMessage, txtIP, txtPorta, txtNome };
         JOptionPane.showMessageDialog(null, texts);
         pnlContent = new JPanel();
-        texto = new JTextArea(10,20);
+        texto              = new JTextArea(10,20);
         texto.setEditable(false);
         texto.setBackground(new Color(240,240,240));
-        txtMsg = new JTextField(20);
-        lblHistorico = new JLabel("Histórico");
-        lblMsg = new JLabel("Mensagem");
+        txtMsg                       = new JTextField(20);
+        lblHistorico     = new JLabel("Histórico");
+        lblMsg        = new JLabel("Mensagem");
+        btnSend                     = new JButton("Enviar");
+        btnSend.setToolTipText("Enviar Mensagem");
         btnSair           = new JButton("Sair");
         btnSair.setToolTipText("Sair do Chat");
         btnSend.addActionListener(this);
