@@ -1,4 +1,4 @@
-package br.com.fatec;
+//code from: https://www.devmedia.com.br/como-criar-um-chat-multithread-com-socket-em-java/33639
 
 import javax.swing.*;
 import java.io.*;
